@@ -1,0 +1,3 @@
+DRUG_PAIRS_README
+These plots highlight mutations for which there is a different effect on MIC between two related drugs.
+The gray diagonal solid and dashed lines represent an equal effect on MIC with +/-1 doubling dilution respectively.
