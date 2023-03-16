@@ -1,6 +1,7 @@
 ///base model
-cd /Users/joshuacarter/Dropbox/cryptic-analysis/Interval_regression/
+cd ../../
 
+///run model using cluster100 for each drug
 foreach clus in cluster100 cluster12 cluster25 cluster50 {
 foreach drug in AMI INH RIF EMB KAN LEV MXF ETH BDQ CFZ LZD RFB DLM {
 	
@@ -8,7 +9,7 @@ cls
 clear
 
 ///import data
-import delimited Input_files/`drug'_no_interaction_equal_end_short_final.csv
+import delimited Input_data/Initial_model/`drug'_no_interaction_equal_end_short_final.csv
 
 ds
 
@@ -28,13 +29,12 @@ translate @Results Output_files/no_int/STATA/equal_end_range/`clus'/`drug'_no_in
 
 ///write output results to file with statistics
 regsave, tstat pval ci
-outsheet var coef stderr tstat pval ci_lower ci_upper using /Users/joshuacarter/Dropbox/cryptic-analysis/Interval_regression/Output_files/no_int/STATA/equal_end_range/`clus'/`drug'_no_interaction_equal_end.csv , comma replace
+outsheet var coef stderr tstat pval ci_lower ci_upper using Output_files/no_int/STATA/equal_end_range/`clus'/`drug'_no_interaction_equal_end.csv , comma replace
 
 }
 }
 
 ///rerun model now accounting for interactions
-cd /Users/joshuacarter/Dropbox/cryptic-analysis/Interval_regression/
 
 foreach drug in INH EMB CFZ RFB ETH MXF LEV KAN RIF {
 foreach clus in cluster100 {
@@ -43,7 +43,7 @@ cls
 clear
 
 //import data with mutation interaction variables
-import delimited Input_files/`drug'_interaction.csv
+import delimited Input_data/Interaction_model/`drug'_interaction.csv
 
 ds
 
@@ -60,14 +60,13 @@ meintreg log2mic uplog2mic `var_list' b4.lineage b2.siteid || `clus': , iterate(
 translate @Results Output_files/int/STATA/`clus'/`drug'_interaction.txt, replace
 
 regsave, tstat pval ci
-outsheet var coef stderr tstat pval ci_lower ci_upper using /Users/joshuacarter/Dropbox/cryptic-analysis/Interval_regression/Output_files/int/STATA/`clus'/`drug'_interaction.csv , comma replace
+outsheet var coef stderr tstat pval ci_lower ci_upper using Output_files/int/STATA/`clus'/`drug'_interaction.csv , comma replace
 
 }
 }
 
 
 ///  linear hypothesis testing
-cd /Users/joshuacarter/Dropbox/cryptic-analysis/Interval_regression/
 
 ///cluster25 cluster50
 ///AMI INH RIF EMB  KAN LEV MXF ETH BDQ CFZ LZD RFB DLM 
@@ -80,7 +79,7 @@ cls
 clear
 
 ///import data for linear hypothesis testing
-import delimited Input_files/`drug'_no_interaction_equal_end_short_final.csv
+import delimited Input_files/Initial_model/`drug'_no_interaction_equal_end_short_final.csv
 
 ds
 
